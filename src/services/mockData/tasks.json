@@ -1,13 +1,13 @@
 [
   {
     "Id": 1,
-    "title": "Complete project proposal",
-    "description": "Finish writing the quarterly project proposal and submit it to the management team for review",
+    "title": "Set up project structure",
+    "description": "Set up the initial project structure and install necessary dependencies for the task management application.",
+    "createdAt": "2024-01-15T10:30:00.000Z",
+    "updatedAt": "2024-01-15T10:30:00.000Z",
     "dueDate": "2024-01-20T23:59:00.000Z",
     "priority": "High",
-    "completed": false,
-    "createdAt": "2024-01-15T09:30:00.000Z",
-    "updatedAt": "2024-01-15T09:30:00.000Z"
+    "completed": false
   },
   {
     "Id": 2,

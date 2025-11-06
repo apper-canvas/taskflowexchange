@@ -1,4 +1,6 @@
-import tasksData from '@/services/mockData/tasks.json'
+import tasksData from "@/services/mockData/tasks.json";
+import React from "react";
+import Error from "@/components/ui/Error";
 
 class TaskService {
   constructor() {
@@ -36,16 +38,14 @@ class TaskService {
     })
   }
 
-  createTask(taskData) {
+createTask(taskData) {
     return new Promise((resolve) => {
       setTimeout(() => {
         const tasks = JSON.parse(localStorage.getItem(this.storageKey) || '[]')
         const maxId = tasks.length > 0 ? Math.max(...tasks.map(t => t.Id)) : 0
         const newTask = {
-Id: maxId + 1,
-          title: taskData.title,
-          description: taskData.description || "",
-          dueDate: taskData.dueDate || null,
+          Id: maxId + 1,
+          ...taskData,
           priority: taskData.priority || "Medium",
           completed: false,
           createdAt: new Date().toISOString(),
@@ -58,13 +58,13 @@ Id: maxId + 1,
     })
   }
 
-  updateTask(id, updates) {
+updateTask(id, updates) {
     return new Promise((resolve, reject) => {
       setTimeout(() => {
         const tasks = JSON.parse(localStorage.getItem(this.storageKey) || '[]')
         const taskIndex = tasks.findIndex(t => t.Id === parseInt(id))
         if (taskIndex !== -1) {
-tasks[taskIndex] = {
+          tasks[taskIndex] = {
             ...tasks[taskIndex],
             ...updates,
             updatedAt: new Date().toISOString()

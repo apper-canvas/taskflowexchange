@@ -1,24 +1,33 @@
-import React, { useState } from 'react'
-import { motion } from 'framer-motion'
-import ApperIcon from '@/components/ApperIcon'
-import Button from '@/components/atoms/Button'
-import Input from '@/components/atoms/Input'
-import Textarea from '@/components/atoms/Textarea'
-import { cn } from '@/utils/cn'
+import React, { useState } from "react";
+import { motion } from "framer-motion";
+import ApperIcon from "@/components/ApperIcon";
+import Textarea from "@/components/atoms/Textarea";
+import Button from "@/components/atoms/Button";
+import Input from "@/components/atoms/Input";
+import { cn } from "@/utils/cn";
 const TaskForm = ({ task, onSubmit, onCancel, isSubmitting = false }) => {
-const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState({
     title: task?.title || '',
     description: task?.description || '',
     dueDate: task?.dueDate ? new Date(task.dueDate).toISOString().split('T')[0] : '',
     priority: task?.priority || 'Medium'
-  })
-  const [errors, setErrors] = useState({})
+  });
 
-const handleInputChange = (field, value) => {
+  const [errors, setErrors] = useState({});
+
+  const handleInputChange = (field, value) => {
     setFormData(prev => ({
       ...prev,
       [field]: value
     }))
+    
+    // Clear error when user starts typing
+    if (errors[field]) {
+      setErrors(prev => ({
+        ...prev,
+        [field]: ''
+      }))
+    }
   }
 
   const getPriorityStyles = (priority) => {
@@ -31,14 +40,6 @@ const handleInputChange = (field, value) => {
         return 'bg-green-50 text-green-700 border-green-200'
       default:
         return 'bg-slate-50 text-slate-700 border-slate-200'
-    }
-    
-    // Clear error when user starts typing
-    if (errors[field]) {
-      setErrors(prev => ({
-        ...prev,
-        [field]: ''
-      }))
     }
   }
 
@@ -127,15 +128,18 @@ onSubmit({
           >
             Priority Level
           </label>
-          <div className="relative">
+<div className="relative">
+            <ApperIcon 
+              name="Flag" 
+              size={16} 
+              className="absolute left-3 top-1/2 transform -translate-y-1/2 text-current"
+            />
             <select
               id="priority"
               value={formData.priority}
               onChange={(e) => handleInputChange('priority', e.target.value)}
               className={cn(
                 "w-full pl-10 pr-4 py-2 border rounded-md transition-all duration-200",
-                "focus:ring-2 focus:ring-blue-500 focus:border-transparent",
-                "appearance-none cursor-pointer",
                 getPriorityStyles(formData.priority)
               )}
             >
@@ -143,11 +147,6 @@ onSubmit({
               <option value="Medium">Medium Priority</option>
               <option value="Low">Low Priority</option>
             </select>
-            <ApperIcon 
-              name="AlertCircle" 
-              size={16} 
-              className="absolute left-3 top-1/2 transform -translate-y-1/2 text-current"
-            />
             <ApperIcon 
               name="ChevronDown" 
               size={16} 

@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
-import { toast } from 'react-toastify'
-import taskService from '@/services/api/taskService'
-import TaskCard from '@/components/molecules/TaskCard'
-import Loading from '@/components/ui/Loading'
-import Error from '@/components/ui/Error'
-import Empty from '@/components/ui/Empty'
+import React, { useEffect, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import { toast } from "react-toastify";
+import taskService from "@/services/api/taskService";
+import TaskCard from "@/components/molecules/TaskCard";
+import Error from "@/components/ui/Error";
+import Empty from "@/components/ui/Empty";
+import Loading from "@/components/ui/Loading";
 
 const TaskList = ({ onAddTask, onEditTask, refreshTrigger }) => {
   const [tasks, setTasks] = useState([])
@@ -97,11 +97,10 @@ const TaskList = ({ onAddTask, onEditTask, refreshTrigger }) => {
     }
   }
 
-  if (loading) return <Loading />
+if (loading) return <Loading />
   if (error) return <Error message={error} onRetry={loadTasks} />
   if (tasks.length === 0) return <Empty onAddTask={onAddTask} />
 
-// Sort tasks: pending first, then completed, within each group sort by priority then creation date
   const getPriorityValue = (priority) => {
     switch (priority) {
       case 'High': return 3
@@ -141,7 +140,7 @@ const TaskList = ({ onAddTask, onEditTask, refreshTrigger }) => {
               layout: { duration: 0.2 }
             }}
           >
-<TaskCard
+            <TaskCard
               task={task}
               onToggleComplete={handleToggleComplete}
               onDelete={handleDeleteTask}
