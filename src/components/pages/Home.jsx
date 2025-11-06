@@ -9,25 +9,36 @@ import TaskForm from '@/components/molecules/TaskForm'
 import taskService from '@/services/api/taskService'
 
 const Home = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false)
+const [isModalOpen, setIsModalOpen] = useState(false)
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [refreshTrigger, setRefreshTrigger] = useState(0)
   const [tasks, setTasks] = useState([])
-
+  const [editingTask, setEditingTask] = useState(null)
   // Update tasks when TaskList loads them
   const updateTasks = (newTasks) => {
     setTasks(newTasks)
   }
 
-  const handleAddTask = () => {
+const handleAddTask = () => {
     setIsModalOpen(true)
+  }
+
+  const handleEditTask = (task) => {
+    setEditingTask(task)
+    setIsEditModalOpen(true)
   }
 
   const handleCloseModal = () => {
     setIsModalOpen(false)
   }
 
-  const handleSubmitTask = async (taskData) => {
+  const handleCloseEditModal = () => {
+    setIsEditModalOpen(false)
+    setEditingTask(null)
+  }
+
+const handleSubmitTask = async (taskData) => {
     try {
       setIsSubmitting(true)
       const newTask = await taskService.createTask(taskData)
@@ -45,6 +56,33 @@ const Home = () => {
     } catch (err) {
       console.error('Error creating task:', err)
       toast.error('Failed to create task. Please try again.', {
+        position: "top-right",
+        autoClose: 3000,
+      })
+    } finally {
+      setIsSubmitting(false)
+    }
+  }
+
+  const handleUpdateTask = async (taskData) => {
+    try {
+      setIsSubmitting(true)
+      await taskService.updateTask(editingTask.Id, taskData)
+      
+      // Refresh task list
+      setRefreshTrigger(prev => prev + 1)
+      
+      // Close modal
+      setIsEditModalOpen(false)
+      setEditingTask(null)
+      
+      toast.success('Task updated successfully! ✅', {
+        position: "top-right",
+        autoClose: 2000,
+      })
+    } catch (err) {
+      console.error('Error updating task:', err)
+      toast.error('Failed to update task. Please try again.', {
         position: "top-right",
         autoClose: 3000,
       })
@@ -74,8 +112,9 @@ const Home = () => {
           />
           
           {/* Task list */}
-          <TaskList
+<TaskList
             onAddTask={handleAddTask}
+            onEditTask={handleEditTask}
             refreshTrigger={refreshTrigger}
             onTasksUpdate={updateTasks}
           />
@@ -93,7 +132,7 @@ const Home = () => {
           <ApperIcon name="Plus" size={24} />
         </motion.button>
         
-        {/* Add Task Modal */}
+{/* Add Task Modal */}
         <Modal
           isOpen={isModalOpen}
           onClose={handleCloseModal}
@@ -101,6 +140,19 @@ const Home = () => {
           <TaskForm
             onSubmit={handleSubmitTask}
             onCancel={handleCloseModal}
+            isSubmitting={isSubmitting}
+          />
+        </Modal>
+
+        {/* Edit Task Modal */}
+        <Modal
+          isOpen={isEditModalOpen}
+          onClose={handleCloseEditModal}
+        >
+          <TaskForm
+            task={editingTask}
+            onSubmit={handleUpdateTask}
+            onCancel={handleCloseEditModal}
             isSubmitting={isSubmitting}
           />
         </Modal>

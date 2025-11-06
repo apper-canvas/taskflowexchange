@@ -7,12 +7,11 @@ import Loading from '@/components/ui/Loading'
 import Error from '@/components/ui/Error'
 import Empty from '@/components/ui/Empty'
 
-const TaskList = ({ onAddTask, refreshTrigger }) => {
+const TaskList = ({ onAddTask, onEditTask, refreshTrigger }) => {
   const [tasks, setTasks] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
   const [deletingTasks, setDeletingTasks] = useState(new Set())
-
   const loadTasks = async () => {
     try {
       setLoading(true)
@@ -126,10 +125,11 @@ const TaskList = ({ onAddTask, refreshTrigger }) => {
               layout: { duration: 0.2 }
             }}
           >
-            <TaskCard
+<TaskCard
               task={task}
               onToggleComplete={handleToggleComplete}
               onDelete={handleDeleteTask}
+              onEdit={onEditTask}
               isDeleting={deletingTasks.has(task.Id)}
             />
           </motion.div>

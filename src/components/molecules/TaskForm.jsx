@@ -5,10 +5,10 @@ import Button from '@/components/atoms/Button'
 import Input from '@/components/atoms/Input'
 import Textarea from '@/components/atoms/Textarea'
 
-const TaskForm = ({ onSubmit, onCancel, isSubmitting = false }) => {
+const TaskForm = ({ task, onSubmit, onCancel, isSubmitting = false }) => {
   const [formData, setFormData] = useState({
-    title: '',
-    description: ''
+    title: task?.title || '',
+    description: task?.description || ''
   })
   const [errors, setErrors] = useState({})
 
@@ -76,11 +76,11 @@ const TaskForm = ({ onSubmit, onCancel, isSubmitting = false }) => {
       onKeyDown={handleKeyDown}
     >
       <div className="text-center space-y-2">
-        <h2 className="text-2xl font-bold text-slate-900">
-          Add New Task
+<h2 className="text-2xl font-bold text-slate-900">
+          {task ? 'Edit Task' : 'Add New Task'}
         </h2>
         <p className="text-slate-600">
-          Create a new task to add to your productivity list
+          {task ? 'Update your task details' : 'Create a new task to add to your productivity list'}
         </p>
       </div>
 
@@ -126,19 +126,19 @@ const TaskForm = ({ onSubmit, onCancel, isSubmitting = false }) => {
               type="submit"
               disabled={isSubmitting || !formData.title.trim()}
               className="min-w-[100px]"
-            >
+>
               {isSubmitting ? (
                 <div className="flex items-center space-x-2">
                   <svg className="animate-spin h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                     <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 714 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
                   </svg>
-                  <span>Adding...</span>
+                  <span>{task ? 'Updating...' : 'Adding...'}</span>
                 </div>
               ) : (
                 <div className="flex items-center space-x-2">
-                  <ApperIcon name="Plus" size={16} />
-                  <span>Add Task</span>
+                  <ApperIcon name={task ? "Save" : "Plus"} size={16} />
+                  <span>{task ? 'Update Task' : 'Add Task'}</span>
                 </div>
               )}
             </Button>
