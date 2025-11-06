@@ -42,10 +42,11 @@ class TaskService {
         const tasks = JSON.parse(localStorage.getItem(this.storageKey) || '[]')
         const maxId = tasks.length > 0 ? Math.max(...tasks.map(t => t.Id)) : 0
         const newTask = {
-          Id: maxId + 1,
-title: taskData.title,
+Id: maxId + 1,
+          title: taskData.title,
           description: taskData.description || "",
           dueDate: taskData.dueDate || null,
+          priority: taskData.priority || "Medium",
           completed: false,
           createdAt: new Date().toISOString(),
           updatedAt: new Date().toISOString()
@@ -63,7 +64,7 @@ title: taskData.title,
         const tasks = JSON.parse(localStorage.getItem(this.storageKey) || '[]')
         const taskIndex = tasks.findIndex(t => t.Id === parseInt(id))
         if (taskIndex !== -1) {
-          tasks[taskIndex] = {
+tasks[taskIndex] = {
             ...tasks[taskIndex],
             ...updates,
             updatedAt: new Date().toISOString()

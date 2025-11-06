@@ -4,6 +4,7 @@
     "title": "Complete project proposal",
     "description": "Finish writing the quarterly project proposal and submit it to the management team for review",
     "dueDate": "2024-01-20T23:59:00.000Z",
+    "priority": "High",
     "completed": false,
     "createdAt": "2024-01-15T09:30:00.000Z",
     "updatedAt": "2024-01-15T09:30:00.000Z"
@@ -13,6 +14,7 @@
     "title": "Call dentist for appointment",
     "description": "Schedule a routine cleaning appointment for next month",
     "dueDate": "2024-01-25T17:00:00.000Z",
+    "priority": "Medium",
     "completed": true,
     "createdAt": "2024-01-14T14:20:00.000Z",
     "updatedAt": "2024-01-15T08:15:00.000Z"
@@ -22,6 +24,7 @@
     "title": "Buy groceries",
     "description": "Get milk, bread, eggs, and vegetables for the week",
     "dueDate": "2024-01-16T18:00:00.000Z",
+    "priority": "Medium",
     "completed": false,
     "createdAt": "2024-01-15T11:45:00.000Z",
     "updatedAt": "2024-01-15T11:45:00.000Z"
@@ -31,6 +34,7 @@
     "title": "Review team presentations",
     "description": "Go through all team member presentations before tomorrow's meeting",
     "dueDate": "2024-01-16T09:00:00.000Z",
+    "priority": "High",
     "completed": false,
     "createdAt": "2024-01-15T16:00:00.000Z",
     "updatedAt": "2024-01-15T16:00:00.000Z"
@@ -40,6 +44,7 @@
     "title": "Update LinkedIn profile",
     "description": "Add recent accomplishments and update job title",
     "dueDate": null,
+    "priority": "Low",
     "completed": true,
     "createdAt": "2024-01-13T10:15:00.000Z",
     "updatedAt": "2024-01-14T09:30:00.000Z"

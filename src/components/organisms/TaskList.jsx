@@ -101,12 +101,28 @@ const TaskList = ({ onAddTask, onEditTask, refreshTrigger }) => {
   if (error) return <Error message={error} onRetry={loadTasks} />
   if (tasks.length === 0) return <Empty onAddTask={onAddTask} />
 
-  // Sort tasks: pending first, then completed, within each group sort by creation date (newest first)
+// Sort tasks: pending first, then completed, within each group sort by priority then creation date
+  const getPriorityValue = (priority) => {
+    switch (priority) {
+      case 'High': return 3
+      case 'Medium': return 2
+      case 'Low': return 1
+      default: return 2
+    }
+  }
+
   const sortedTasks = [...tasks].sort((a, b) => {
     if (a.completed !== b.completed) {
       return a.completed ? 1 : -1 // Pending tasks first
     }
-    return new Date(b.createdAt) - new Date(a.createdAt) // Newest first within each group
+    
+    // Within same completion status, sort by priority (High > Medium > Low)
+    const priorityDiff = getPriorityValue(b.priority) - getPriorityValue(a.priority)
+    if (priorityDiff !== 0) {
+      return priorityDiff
+    }
+    
+    return new Date(b.createdAt) - new Date(a.createdAt) // Newest first within same priority
   })
 
   return (

@@ -11,6 +11,18 @@ const TaskCard = ({
   onEdit,
   isDeleting = false 
 }) => {
+  const getPriorityStyles = (priority) => {
+    switch (priority) {
+      case 'High':
+        return 'bg-red-100 text-red-700 border-red-200'
+      case 'Medium':
+        return 'bg-yellow-100 text-yellow-700 border-yellow-200'
+      case 'Low':
+        return 'bg-green-100 text-green-700 border-green-200'
+      default:
+        return 'bg-slate-100 text-slate-700 border-slate-200'
+    }
+  }
   const handleToggleComplete = async () => {
     // Add completion animation class temporarily
     const element = document.getElementById(`task-${task.Id}`)
@@ -46,8 +58,8 @@ const TaskCard = ({
         ease: "easeOut" 
       }}
       className={cn(
-        "task-card bg-white rounded-lg border border-slate-200 p-4 shadow-sm group",
-        task.completed && "bg-gradient-to-r from-green-50/50 to-emerald-50/50 border-green-200"
+"task-card bg-white rounded-lg border p-4 shadow-sm group",
+        task.completed ? "bg-gradient-to-r from-green-50/50 to-emerald-50/50 border-green-200" : `border-l-4 ${getPriorityStyles(task.priority).split(' ')[2]}`
       )}
     >
       <div className="flex items-start space-x-4">
@@ -57,8 +69,20 @@ const TaskCard = ({
           className="mt-0.5 flex-shrink-0"
         />
         
-        <div className="flex-1 min-w-0">
-<div className="flex-1 mr-3">
+<div className="flex-1 min-w-0 space-y-2">
+<div className="flex items-start justify-between">
+            <div className="flex items-center gap-2 mb-1">
+              <span className={cn(
+                "inline-flex items-center px-2 py-1 rounded-full text-xs font-medium border",
+                getPriorityStyles(task.priority),
+                task.completed && "opacity-60"
+              )}>
+                {task.priority}
+              </span>
+            </div>
+          </div>
+          
+          <div className="flex-1 mr-3">
             <h3 className={cn(
               "font-medium text-slate-900 transition-all duration-200",
               task.completed && "line-through text-slate-500"
@@ -77,9 +101,9 @@ const TaskCard = ({
           </div>
           
           {/* Edit Button */}
-          <button
+<button
             onClick={() => onEdit && onEdit(task)}
-            className="opacity-0 group-hover:opacity-100 p-1.5 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-md transition-all duration-200"
+            className="opacity-0 group-hover:opacity-100 p-1.5 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-md transition-all duration-200 mt-1"
             title="Edit task"
           >
             <ApperIcon name="Edit" size={16} />
