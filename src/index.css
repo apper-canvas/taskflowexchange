@@ -1,0 +1,98 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import 'react-toastify/dist/ReactToastify.css';
+
+/* Toast customizations */
+:root {
+  .Toastify__toast-container {
+    width: 320px;
+  }
+  
+  .Toastify__toast {
+    font-family: 'Inter', sans-serif;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+  
+  .Toastify__toast--success {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  }
+  
+  .Toastify__toast--error {
+    background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+  }
+  
+  .Toastify__toast--info {
+    background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+  }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f5f9;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* Smooth focus transitions */
+input:focus, textarea:focus {
+  transition: all 0.2s ease-out;
+}
+
+/* Custom checkbox animation */
+.checkbox-animation:checked {
+  animation: check-in 0.2s ease-out;
+}
+
+/* Task completion animation */
+.task-completed {
+  animation: scale-pulse 0.3s ease-out;
+}
+
+/* Button hover effects */
+.btn-primary {
+  transition: all 0.15s ease-out;
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 8px 25px rgba(99, 102, 241, 0.25);
+}
+
+/* Card hover effects */
+.task-card {
+  transition: all 0.2s ease-out;
+}
+
+.task-card:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+}
+
+/* Floating button animation */
+.floating-btn {
+  transition: all 0.2s ease-out;
+}
+
+.floating-btn:hover {
+  transform: scale(1.1);
+  box-shadow: 0 8px 25px rgba(99, 102, 241, 0.3);
+}
+
+.floating-btn:active {
+  transform: scale(0.95);
+}

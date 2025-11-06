@@ -1,0 +1,42 @@
+[
+  {
+    "Id": 1,
+    "title": "Complete project proposal",
+    "description": "Finish writing the quarterly project proposal and submit it to the management team for review",
+    "completed": false,
+    "createdAt": "2024-01-15T09:30:00.000Z",
+    "updatedAt": "2024-01-15T09:30:00.000Z"
+  },
+  {
+    "Id": 2,
+    "title": "Call dentist for appointment",
+    "description": "Schedule a routine cleaning appointment for next month",
+    "completed": true,
+    "createdAt": "2024-01-14T14:20:00.000Z",
+    "updatedAt": "2024-01-15T08:15:00.000Z"
+  },
+  {
+    "Id": 3,
+    "title": "Buy groceries",
+    "description": "Get milk, bread, eggs, and vegetables for the week",
+    "completed": false,
+    "createdAt": "2024-01-15T11:45:00.000Z",
+    "updatedAt": "2024-01-15T11:45:00.000Z"
+  },
+  {
+    "Id": 4,
+    "title": "Review team presentations",
+    "description": "Go through all team member presentations before tomorrow's meeting",
+    "completed": false,
+    "createdAt": "2024-01-15T16:00:00.000Z",
+    "updatedAt": "2024-01-15T16:00:00.000Z"
+  },
+  {
+    "Id": 5,
+    "title": "Update LinkedIn profile",
+    "description": "Add recent accomplishments and update job title",
+    "completed": true,
+    "createdAt": "2024-01-13T10:15:00.000Z",
+    "updatedAt": "2024-01-14T09:30:00.000Z"
+  }
+]
