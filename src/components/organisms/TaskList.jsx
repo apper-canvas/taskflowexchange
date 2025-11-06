@@ -7,13 +7,15 @@ import Error from "@/components/ui/Error";
 import Empty from "@/components/ui/Empty";
 import Loading from "@/components/ui/Loading";
 import Button from "@/components/atoms/Button";
-
+import Input from "@/components/atoms/Input";
+import ApperIcon from "@/components/ApperIcon";
 const TaskList = ({ onAddTask, onEditTask, refreshTrigger }) => {
-  const [tasks, setTasks] = useState([])
+const [tasks, setTasks] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
   const [deletingTasks, setDeletingTasks] = useState(new Set())
   const [filter, setFilter] = useState('all')
+  const [searchQuery, setSearchQuery] = useState('')
   const loadTasks = async () => {
     try {
       setLoading(true)
@@ -115,32 +117,54 @@ if (loading) return <Loading />
 // Moved to inside return statement for better organization
 
 // Filter tasks based on selected filter
-  const getFilteredTasks = () => {
+const getFilteredTasks = () => {
     const today = new Date()
     today.setHours(23, 59, 59, 999) // End of today
     const todayStart = new Date()
     todayStart.setHours(0, 0, 0, 0) // Start of today
     
+    // First apply category filter
+    let filteredTasks = []
     switch (filter) {
       case 'active':
-        return tasks.filter(task => !task.completed)
+        filteredTasks = tasks.filter(task => !task.completed)
+        break
       case 'completed':
-        return tasks.filter(task => task.completed)
+        filteredTasks = tasks.filter(task => task.completed)
+        break
       case 'due-today':
-        return tasks.filter(task => {
+        filteredTasks = tasks.filter(task => {
           if (!task.dueDate) return false
           const taskDueDate = new Date(task.dueDate)
           return taskDueDate >= todayStart && taskDueDate <= today
         })
+        break
       case 'overdue':
-        return tasks.filter(task => {
+        filteredTasks = tasks.filter(task => {
           if (!task.dueDate || task.completed) return false
           const taskDueDate = new Date(task.dueDate)
           return taskDueDate < todayStart
         })
+        break
       default:
-        return tasks
+        filteredTasks = tasks
     }
+    
+    // Then apply search filter if search query exists
+    if (searchQuery.trim()) {
+      const query = searchQuery.toLowerCase()
+      filteredTasks = filteredTasks.filter(task => {
+        const title = task.title?.toLowerCase() || ''
+        const description = task.description?.toLowerCase() || ''
+        const category = task.category?.toLowerCase() || ''
+        
+        return title.includes(query) || 
+               description.includes(query) || 
+               category.includes(query)
+      })
+    }
+    
+    return filteredTasks
   }
 
   // Get task counts for filter buttons
@@ -185,7 +209,27 @@ if (loading) return <Loading />
   })
 
   return (
-    <div className="space-y-6">
+<div className="space-y-6">
+      {/* Search Bar */}
+      <div className="bg-white rounded-lg p-4 shadow-sm border">
+        <div className="flex items-center space-x-2">
+          <div className="relative flex-1">
+            <ApperIcon 
+              name="Search" 
+              size={18} 
+              className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400" 
+            />
+            <Input
+              type="text"
+              placeholder="Search tasks by title, description, or category..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="pl-10 w-full"
+            />
+          </div>
+        </div>
+      </div>
+
       {/* Filter Buttons */}
       <div className="bg-white rounded-lg p-4 shadow-sm border">
         <div className="flex flex-wrap gap-2">
