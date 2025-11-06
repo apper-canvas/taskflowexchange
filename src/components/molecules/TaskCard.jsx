@@ -85,21 +85,40 @@ const TaskCard = ({
             <ApperIcon name="Edit" size={16} />
           </button>
           
-          <div className="flex items-center space-x-4 mt-3 text-xs text-slate-400">
-            <div className="flex items-center space-x-1">
-              <ApperIcon name="Calendar" size={12} />
-              <span>
-                {new Date(task.createdAt).toLocaleDateString('en-US', {
-                  month: 'short',
-                  day: 'numeric'
-                })}
-              </span>
+<div className="flex items-center justify-between mt-3 text-xs">
+            <div className="flex items-center space-x-4 text-slate-400">
+              <div className="flex items-center space-x-1">
+                <ApperIcon name="Calendar" size={12} />
+                <span>
+                  {new Date(task.createdAt).toLocaleDateString('en-US', {
+                    month: 'short',
+                    day: 'numeric'
+                  })}
+                </span>
+              </div>
+              {task.description && (
+                <div className="flex items-center space-x-1">
+                  <ApperIcon name="FileText" size={12} />
+                  <span>Has details</span>
+                </div>
+              )}
             </div>
-            
-            {task.completed && (
-              <div className="flex items-center space-x-1 text-green-600">
-                <ApperIcon name="CheckCircle" size={12} />
-                <span>Completed</span>
+            {task.dueDate && (
+              <div className={cn(
+                "flex items-center space-x-1 px-2 py-1 rounded-full text-xs font-medium",
+                new Date(task.dueDate) < new Date() && !task.completed
+                  ? "bg-red-100 text-red-700"
+                  : new Date(task.dueDate).toDateString() === new Date().toDateString() && !task.completed
+                  ? "bg-orange-100 text-orange-700"
+                  : "bg-blue-100 text-blue-700"
+              )}>
+                <ApperIcon name="Clock" size={12} />
+                <span>
+                  Due {new Date(task.dueDate).toLocaleDateString('en-US', {
+                    month: 'short',
+                    day: 'numeric'
+                  })}
+                </span>
               </div>
             )}
           </div>

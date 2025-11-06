@@ -6,9 +6,10 @@ import Input from '@/components/atoms/Input'
 import Textarea from '@/components/atoms/Textarea'
 
 const TaskForm = ({ task, onSubmit, onCancel, isSubmitting = false }) => {
-  const [formData, setFormData] = useState({
+const [formData, setFormData] = useState({
     title: task?.title || '',
-    description: task?.description || ''
+    description: task?.description || '',
+    dueDate: task?.dueDate ? new Date(task.dueDate).toISOString().split('T')[0] : ''
   })
   const [errors, setErrors] = useState({})
 
@@ -50,9 +51,10 @@ const TaskForm = ({ task, onSubmit, onCancel, isSubmitting = false }) => {
     e.preventDefault()
     
     if (validateForm()) {
-      onSubmit({
+onSubmit({
         title: formData.title.trim(),
-        description: formData.description.trim()
+        description: formData.description.trim(),
+        dueDate: formData.dueDate ? new Date(formData.dueDate).toISOString() : null
       })
     }
   }
@@ -101,8 +103,36 @@ const TaskForm = ({ task, onSubmit, onCancel, isSubmitting = false }) => {
           placeholder="Add more details about this task..."
           rows={4}
           error={errors.description}
-        />
+/>
 
+        <div className="space-y-2">
+          <label 
+            htmlFor="dueDate" 
+            className="block text-sm font-medium text-slate-700"
+          >
+            Due Date
+          </label>
+          <div className="relative">
+            <Input
+              id="dueDate"
+              type="date"
+              value={formData.dueDate}
+              onChange={(e) => setFormData(prev => ({
+                ...prev,
+                dueDate: e.target.value
+              }))}
+              className="pl-10"
+            />
+            <ApperIcon 
+              name="Calendar" 
+              size={16} 
+              className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400"
+            />
+          </div>
+          <p className="text-xs text-slate-500">
+            Optional: Set a deadline for this task
+          </p>
+        </div>
         <div className="flex items-center justify-between pt-4 border-t border-slate-200">
           <div className="text-sm text-slate-500 space-y-1">
             <p>Tips:</p>

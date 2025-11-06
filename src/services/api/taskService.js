@@ -43,8 +43,9 @@ class TaskService {
         const maxId = tasks.length > 0 ? Math.max(...tasks.map(t => t.Id)) : 0
         const newTask = {
           Id: maxId + 1,
-          title: taskData.title,
+title: taskData.title,
           description: taskData.description || "",
+          dueDate: taskData.dueDate || null,
           completed: false,
           createdAt: new Date().toISOString(),
           updatedAt: new Date().toISOString()
