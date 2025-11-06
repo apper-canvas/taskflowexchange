@@ -6,12 +6,14 @@ import TaskCard from "@/components/molecules/TaskCard";
 import Error from "@/components/ui/Error";
 import Empty from "@/components/ui/Empty";
 import Loading from "@/components/ui/Loading";
+import Button from "@/components/atoms/Button";
 
 const TaskList = ({ onAddTask, onEditTask, refreshTrigger }) => {
   const [tasks, setTasks] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
   const [deletingTasks, setDeletingTasks] = useState(new Set())
+  const [filter, setFilter] = useState('all')
   const loadTasks = async () => {
     try {
       setLoading(true)
@@ -110,7 +112,65 @@ if (loading) return <Loading />
     }
   }
 
-  const sortedTasks = [...tasks].sort((a, b) => {
+// Moved to inside return statement for better organization
+
+// Filter tasks based on selected filter
+  const getFilteredTasks = () => {
+    const today = new Date()
+    today.setHours(23, 59, 59, 999) // End of today
+    const todayStart = new Date()
+    todayStart.setHours(0, 0, 0, 0) // Start of today
+    
+    switch (filter) {
+      case 'active':
+        return tasks.filter(task => !task.completed)
+      case 'completed':
+        return tasks.filter(task => task.completed)
+      case 'due-today':
+        return tasks.filter(task => {
+          if (!task.dueDate) return false
+          const taskDueDate = new Date(task.dueDate)
+          return taskDueDate >= todayStart && taskDueDate <= today
+        })
+      case 'overdue':
+        return tasks.filter(task => {
+          if (!task.dueDate || task.completed) return false
+          const taskDueDate = new Date(task.dueDate)
+          return taskDueDate < todayStart
+        })
+      default:
+        return tasks
+    }
+  }
+
+  // Get task counts for filter buttons
+  const getTaskCounts = () => {
+    const today = new Date()
+    today.setHours(23, 59, 59, 999)
+    const todayStart = new Date()
+    todayStart.setHours(0, 0, 0, 0)
+    
+    return {
+      all: tasks.length,
+      active: tasks.filter(task => !task.completed).length,
+      completed: tasks.filter(task => task.completed).length,
+      dueToday: tasks.filter(task => {
+        if (!task.dueDate) return false
+        const taskDueDate = new Date(task.dueDate)
+        return taskDueDate >= todayStart && taskDueDate <= today
+      }).length,
+      overdue: tasks.filter(task => {
+        if (!task.dueDate || task.completed) return false
+        const taskDueDate = new Date(task.dueDate)
+        return taskDueDate < todayStart
+      }).length
+    }
+  }
+
+  const filteredTasks = getFilteredTasks()
+  const taskCounts = getTaskCounts()
+
+  const sortedTasks = [...filteredTasks].sort((a, b) => {
     if (a.completed !== b.completed) {
       return a.completed ? 1 : -1 // Pending tasks first
     }
@@ -125,7 +185,55 @@ if (loading) return <Loading />
   })
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-6">
+      {/* Filter Buttons */}
+      <div className="bg-white rounded-lg p-4 shadow-sm border">
+        <div className="flex flex-wrap gap-2">
+          <Button
+            variant={filter === 'all' ? 'default' : 'outline'}
+            size="sm"
+            onClick={() => setFilter('all')}
+            className="text-sm"
+          >
+            All Tasks ({taskCounts.all})
+          </Button>
+          <Button
+            variant={filter === 'active' ? 'default' : 'outline'}
+            size="sm"
+            onClick={() => setFilter('active')}
+            className="text-sm"
+          >
+            Active ({taskCounts.active})
+          </Button>
+          <Button
+            variant={filter === 'completed' ? 'default' : 'outline'}
+            size="sm"
+            onClick={() => setFilter('completed')}
+            className="text-sm"
+          >
+            Completed ({taskCounts.completed})
+          </Button>
+          <Button
+            variant={filter === 'due-today' ? 'default' : 'outline'}
+            size="sm"
+            onClick={() => setFilter('due-today')}
+            className="text-sm"
+          >
+            Due Today ({taskCounts.dueToday})
+          </Button>
+          <Button
+            variant={filter === 'overdue' ? 'default' : 'outline'}
+            size="sm"
+            onClick={() => setFilter('overdue')}
+            className="text-sm"
+          >
+            Overdue ({taskCounts.overdue})
+          </Button>
+        </div>
+      </div>
+
+      {/* Task List */}
+      <div className="space-y-4">
       <AnimatePresence mode="popLayout">
         {sortedTasks.map((task, index) => (
           <motion.div
@@ -151,8 +259,9 @@ if (loading) return <Loading />
         ))}
       </AnimatePresence>
       
-      {/* Spacing for floating button */}
-      <div className="h-20"></div>
+{/* Spacing for floating button */}
+        <div className="h-20"></div>
+      </div>
     </div>
   )
 }
